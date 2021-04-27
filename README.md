@@ -134,10 +134,31 @@ locals {
   }
 }
 
-# Terraform Functions
+## Terraform Functions
 Terraform includes some base functions. It does not support user defined functios.
 
     function(arg1, arg2)
 
 See [documentation](https://www.terraform.io/docs/language/functions/index.html)
+
+
+## Data Sources
+Data sources allows data to be fetched or computed for use elsewhere in Terraform configuration.
+
+It is defined under the data block read from a specific data source (aws_ami) and export the result under "app_ami"
+
+data "aws_ami" "app_ami" {
+    most_recent = true
+    owners = ["amazon"]
+
+    filter {
+        name = "name"
+        value = ["amzn2-ami-hvm*"]
+    }
+}
+
+resource "aws_instance" "instance-1" {
+    ami = data.aws_ami.app_ami.id
+    instance_type = "t2.micro"
+}
 
