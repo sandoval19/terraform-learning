@@ -50,14 +50,14 @@ How to specify the version of the provider:
     ~>2.0 Any version in the 2.X range
     >=2.10, <=2.30 Any version between 2.10 and 2.30
 
-terraform {
-    required_providers {
-        aws = {
-        source  = "hashicorp/aws"
-        version = ~>2.0
+    terraform {
+        required_providers {
+            aws = {
+            source  = "hashicorp/aws"
+            version = ~>2.0
+            }
         }
     }
-}
 
 When changing the version of the provider after doing the terraform init, terraform will re-select the first version defined. To override the version run:
 
@@ -97,11 +97,11 @@ The [count](https://www.terraform.io/docs/language/meta-arguments/count.html#bas
 
 In blocks where count is set, the name of the resources may be different of each other by adding the count.index attribute by instantiating the name of the resource, for example:
 
-resource "<resource_type>" "<resource_name>" {
-    name  = "<variable_name>.${count.index}"
-    count = 3
-    path  = "/system/"
-}
+    resource "<resource_type>" "<resource_name>" {
+        name  = "<variable_name>.${count.index}"
+        count = 3
+        path  = "/system/"
+    }
 
 Each of the created resources will be named as the variable name followed by the number of the count in each iteration as follows:
 
@@ -111,28 +111,28 @@ Each of the created resources will be named as the variable name followed by the
 
 The above approach may lead to difficult naming, however it is posible for the resources to be named with specific names we can define a list of values that contains each of the names for the resources, for example:
 
-variable "<variable_name>" {
-    type    = list
-    default = ["name1", "name2", "name3"] 
-}
+    variable "<variable_name>" {
+        type    = list
+        default = ["name1", "name2", "name3"] 
+    }
 
-resource "<resource_type>" "<resource_name>" {
-    name  = var.<variable_name>[count.index]
-    count = 3
-    path  = "/system/"
-}
+    resource "<resource_type>" "<resource_name>" {
+        name  = var.<variable_name>[count.index]
+        count = 3
+        path  = "/system/"
+    }
 
 
 ## Local variables
 
 A local value assigns a name to an expression, allowing it to be used multiple times within a module without repeating.
 
-locals {
-  common_tags = {
-    Owner   = "Devops Team"
-    service = "backend"
-  }
-}
+    locals {
+        common_tags = {
+            Owner   = "Devops Team"
+            service = "backend"
+        }
+    }
 
 ## Terraform Functions
 Terraform includes some base functions. It does not support user defined functios.
