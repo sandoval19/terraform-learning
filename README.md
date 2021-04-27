@@ -162,3 +162,37 @@ resource "aws_instance" "instance-1" {
     instance_type = "t2.micro"
 }
 
+## Debugging Terraform
+
+Terraform has detailed logs which can be enabled by setting the TF_LOG environment variable to any value. There are the following log levels: TRACE, DEBUG, INFO, WARN, ERROR. To see the logs export TF_LOG as an environment variable and the run terraform plan/apply
+
+    $ export TF_LOG=TRACE
+
+Logs also can be saved in a new file running:
+
+    $ export TF_LOG_PATH=/tmp/terraform-crash.log
+
+## Terraform formating
+
+To format a terraform file usng the command line you can run:
+
+    $ <terrafor_file_name> fmt
+
+## Terraform Validate
+
+Terraform Validate checks if a configuration is syntactically valid. It checks several aspects like unsoported arguments and undeclared variables.
+
+    $ terraform validate
+
+## Understanding Semantics
+
+Terraform usually loads the configurations files within the directory specified in alphabetical order. Files must have the .tf or .tf.json extensions.
+
+Terraform files must be named accordingly to the type of the resource that will be created, the variables of the file or the provider, for example:
+
+    TF_directory
+    - provider.tf
+    - variables.tf
+    - iam_user.tf
+
+A good practice is to split into different files each resource, thus there will be one small thing to debug.
