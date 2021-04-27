@@ -63,4 +63,61 @@ When changing the version of the provider after doing the terraform init, terraf
 
 terraform init -upgrade
 
+## Attributes
 
+Terraform allows to output the attribute from a resource as an output value. Output attributes can also be used as an input to other resources that will be created using terraform.
+
+    output "<output_name>" {
+        value = <resource>.<resource_identifier>.<attribute>
+    }
+
+## Variables
+
+Repeated static values can create more work in the future, to avoid repeating values we can create terraform variables that are set only once and use them in all the files where the value is needed. Variables are defined as follows:
+
+    variable "<variable_name>" {
+        default = "<variable_value>"
+    }
+
+The variables defined with a default value in the variables.tf file can be also defined by command line when running terraform plan or terraform apply:
+
+    terraform plan -var="<variable_name>=<variable_value>"
+
+When the variable has not a default value, the value will be required a after running terraform plan or apply.
+
+When using different environments is recommended to define the variables in .tfvars files
+
+Variable types allows to add a constraint about the values that the variable can have. For example, to define a variable of type number:
+
+    variable "<variable_name>" {
+        type = "number"
+    }
+
+The [count](https://www.terraform.io/docs/language/meta-arguments/count.html#basic-syntax) meta-argument accepts a whole number, and creates many instances as the count variable for the resource usaged. Each instance has a distinct infrastructure object associated with it, and each one applies the init, destoy or plan commands
+
+In blocks where count is set, the name of the resources may be different of each other by adding the count.index attribute by instantiating the name of the resource, for example:
+
+resource "<resource_type>" "<resource_name>" {
+    name  = "<variable_name>.${count.index}"
+    count = 3
+    path  = "/system/"
+}
+
+Each of the created resources will be named as the variable name followed by the number of the count in each iteration as follows:
+
+    <variable_name>0
+    <variable_name>1
+    <variable_name>2
+
+The above approach may lead to difficult naming, however it is posible for the resources to be named with specific names we can define a list of values that contains each of the names for the resources, for example:
+
+variable "<variable_name>" {
+    type    = list
+    default = ["name1", "name2", "name3"] 
+}
+
+resource "<resource_type>" "<resource_name>" {
+    name  = var.<variable_name>[count.index]
+    count = 3
+    path  = "/system/"
+}
