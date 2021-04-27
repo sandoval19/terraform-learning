@@ -133,3 +133,11 @@ locals {
     service = "backend"
   }
 }
+
+# Terraform Functions
+Terraform includes some base functions. It does not support user defined functios.
+
+    function(arg1, arg2)
+
+See [documentation](https://www.terraform.io/docs/language/functions/index.html)
+
